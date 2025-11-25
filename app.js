@@ -45,6 +45,19 @@ app.get('/likes', async (req, res) => {
     }
 })
 
+app.post('/likes', async (req, res) => {
+    let item = req.body;
+    let db = firebase.firestore();
+    let r = await db.collection('likes').doc(item.collectionId.toString()).set(item);
+
+    res.json({msg : 'OK'});
+})
+
+app.delete('/likes/:id', async (req, res) => {
+    let db = firebase.firestore();
+    let r = await db.collection('likes').doc(req.params.id).delete();
+    res.json({msg : 'OK'});
+})
 
 app.get('/musicSearch/:term', async (req, res) => {
     const params = {
