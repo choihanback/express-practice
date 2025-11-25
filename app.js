@@ -1,7 +1,7 @@
 var express = require('express');
-const logger = require('morgan');
+const logger = require('morgan'); // npm install morgan --save
+const axios = require('axios'); // npm install axios --save
 
-// npm install morgan --save 필요
 var app = express()
 const port = 3000
 
@@ -25,6 +25,16 @@ app.get('/user', (req, res) => {
 app.post('/user', (req, res) => {
     console.log(req.body.name);
     res.send(req.body);
+})
+
+app.get('/musicSearch/:term', async (req, res) => {
+    const params = {
+        term : req.params.term,
+        entity : "album",
+    }
+    var response = await axios.get('https://itunes.apple.com/search', {params : params});
+    console.log(response.data);
+    res.json(response.data);
 })
 
 app.listen(port, () => {
