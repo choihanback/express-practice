@@ -8,10 +8,10 @@ const port = 3000
 app.use(express.json())
 app.use(express.urlencoded({extended : true}));
 app.use(logger('dev'));
-
+app.use(express.static('public')); // 
 
 app.get('/', (req, res) => {
-    res.send('Hello World!')
+    res.sendFile('index.html')
 })
 
 app.get('/user/:id', (req, res) => {
