@@ -1,6 +1,7 @@
 var express = require('express');
 const logger = require('morgan'); // npm install morgan --save
 const axios = require('axios'); // npm install axios --save
+const firebase = require('./firebase');
 
 var app = express()
 const port = 3000
@@ -27,6 +28,24 @@ app.post('/user', (req, res) => {
     res.send(req.body);
 })
 
+app.get('/likes', async (req, res) => {
+    var db = firebase.firestore();
+    const snapshot = await db.collection('likes').get().catch(e => console.log(e));
+    var results = [];
+    if (snapshot.empty){
+        console.log("No result");
+        res.json([]);
+        return;
+    } else {
+        snapshot.forEach(doc => {
+            results.push(doc.data())
+            // console.log(doc.id, '=>', doc.data());
+        })
+        res.json(results);
+    }
+})
+
+
 app.get('/musicSearch/:term', async (req, res) => {
     const params = {
         term : req.params.term,
@@ -36,6 +55,7 @@ app.get('/musicSearch/:term', async (req, res) => {
     console.log(response.data);
     res.json(response.data);
 })
+
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
