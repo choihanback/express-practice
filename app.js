@@ -2,10 +2,12 @@ var express = require('express');
 const logger = require('morgan'); // npm install morgan --save
 const axios = require('axios'); // npm install axios --save
 const firebase = require('./firebase');
+const cors = require('cors');
 
 var app = express()
 const port = 3000
 
+app.use(cors({ origin : '*'}));
 app.use(express.json())
 app.use(express.urlencoded({extended : true}));
 app.use(logger('dev'));
@@ -72,6 +74,5 @@ app.get('/musicSearch/:term', async (req, res) => {
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
-})
+})  
 
- 
