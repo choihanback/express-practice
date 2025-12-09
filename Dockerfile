@@ -2,12 +2,10 @@ FROM node:18.15.0
 
 WORKDIR /app
 
-COPY package.json ./
+ADD . /app
 
-RUN npm install
+RUN npm
 
-COPY . .
+EXPOSE 8080
 
-EXPOSE 3000
-
-CMD ["node", "app.js"]
+ENTRYPOINT ["node", "app.js"]
